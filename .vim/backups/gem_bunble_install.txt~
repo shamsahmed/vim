@@ -1,0 +1,9 @@
+gem install to handle config file
+=========
+gem install mysql -- --with-mysql-config=/Users/shams/mysql-5.5.8-osx10.6-x86_64/bin/mysql_config
+
+bundle install to handle some stupid issue
+=========
+bundle config build.mysql2 --with-mysql-config=/Users/shams/mysql-5.5.8-osx10.6-x86_64/bin/mysql_config
+bundle install -with-mysql-config=/Users/shams/mysql-5.5.8-osx10.6-x86_64/bin/mysql_config -with-opt-include=/Users/shams/mysql-5.5.8-osx10.6-x86_64/include/
+

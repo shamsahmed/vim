@@ -1,0 +1,400 @@
+7%+n@mcUpU
+
+select * from (
+(select ul.user_list_id        id, 
+	  ul.list_name        list_name,
+       'LIST_CHANGE'          action,
+       ul.fb_username         list_owner ,
+       null                   item_name,
+       null                   item_bought_by,
+       null                   item_show_buyer, 
+       date_format(ul.creation_date ,'%W %D %M %Y% %H:%i')      creation_date, 
+       date_format(ul.last_update_date ,'%W %D %M %Y% %H:%i')    last_update_date,
+       ul.last_update_date      sort_date,       
+      /*count(date_format(li.creation_date ,'%D %M %Y'))  count*/
+       date_format(li.creation_date ,'%D %M %Y') group_date,  
+       count(li.list_item_id) num_items_changed 
+from user_lists ul, list_items li
+where ul.user_list_id = li.user_list_id
+and ul.fb_username  IN (100000926078400,503510068,13714178,0) 
+and li.delete_flag is null
+and ul.delete_flag is null
+and DATEDIFF(ul.last_update_date,li.last_update_date) = 0
+/*and (DATE_FORMAT(ul.last_update_date,,'%D %M %Y') =DATE_FORMAT(li.last_update_date,'%D %M %Y') 
+*/
+and ul.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+group by ul.user_list_id, ul.list_name, group_date
+order by ul.last_update_date desc LIMIT 10)
+UNION ALL
+(select ul.user_list_id        id,
+       ul.list_name           list_name,
+      'ITEM_BAUGHT'           action,     
+       ul.fb_username         list_owner,
+       li.item_name           item_name, 
+       li.bought_by           item_bought_by,
+       li.show_buyer          item_show_buyer,
+       date_format(li.creation_date ,'%W %D %M %Y% %H:%i')      creation_date, 
+       date_format(li.last_update_date ,'%W %D %M %Y% %H:%i')    last_update_date,
+       li.last_update_date    sort_date,
+       null                   group_date,
+       null                   num_items_changed
+from list_items li, user_lists ul
+where ul.user_list_id = li.user_list_id
+and li.bought_by IS NOT NULL
+and ul.fb_username  IN (100000926078400,503510068,13714178,0)
+and li.delete_flag is null
+and ul.delete_flag is null
+and li.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+order by li.last_update_date desc LIMIT 10)) active_friend
+order by active_friend.sort_date desc
+
+/* active_friend
+order by active_friend.last_update_date 
+*/
+
+
+SELECT * FROM (
+(select ul.user_list_id        id, 
+	  ul.list_name        list_name,
+       'LIST_CHANGE'          action,
+       ul.fb_username         list_owner ,
+       null                   item_name,
+       null                   item_bought_by,
+       null                   item_show_buyer, 
+       ul.creation_date       creation_date, 
+       ul.last_update_date    last_update_date,
+       count(li.list_item_id) num_items_changed
+from user_lists ul, list_items li
+where ul.user_list_id = li.user_list_id
+and ul.fb_username  IN ('500012696')
+and li.delete_flag is null
+and ul.delete_flag is null
+and ul.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+group by ul.user_list_id, ul.list_name
+order by ul.last_update_date desc LIMIT 10)
+UNION ALL
+(select ul.user_list_id        id,
+       ul.list_name           list_name,
+      'ITEM_BAUGHT'           action,     
+       ul.fb_username         list_owner,
+       li.item_name           item_name, 
+       li.bought_by           item_bought_by,
+       li.show_buyer          item_show_buyer,
+       li.creation_date       creation_date,
+       li.last_update_date    last_update_date,
+       null                   num_items_changed
+from list_items li, user_lists ul
+where ul.user_list_id = li.user_list_id
+and li.bought_by IS NOT NULL
+and ul.fb_username  IN ('500012696')
+and li.delete_flag is null
+and ul.delete_flag is null
+and li.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+order by li.last_update_date desc LIMIT 10)
+ ) active_friend
+order by active_friend.last_update_date desc limit 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM (
+(select ul.user_list_id        id, 
+	  ul.list_name        list_name,
+       'LIST_CHANGE'          action,
+       ul.fb_username         list_owner ,
+       null                   item_name,
+       null                   item_bought_by,
+       null                   item_show_buyer, 
+       ul.creation_date       creation_date, 
+       ul.last_update_date    last_update_date,
+       count(li.list_item_id) num_items_changed
+from user_lists ul, list_items li
+where ul.user_list_id = li.user_list_id
+and ul.fb_username  IN ('500012696')
+and li.delete_flag is null
+and ul.delete_flag is null
+and ul.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+group by ul.user_list_id, ul.list_name
+order by ul.last_update_date desc LIMIT 10)
+UNION ALL
+(select ul.user_list_id        id,
+       ul.list_name           list_name,
+      'ITEM_BAUGHT'           action,     
+       ul.fb_username         list_owner,
+       li.item_name           item_name, 
+       li.bought_by           item_bought_by,
+       li.show_buyer          item_show_buyer,
+       li.creation_date       creation_date,
+       li.last_update_date    last_update_date,
+       null                   num_items_changed
+from list_items li, user_lists ul
+where ul.user_list_id = li.user_list_id
+and li.bought_by IS NOT NULL
+and ul.fb_username  IN ('500012696')
+and li.delete_flag is null
+and ul.delete_flag is null
+and li.last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+order by li.last_update_date desc LIMIT 10)
+ ) active_friend
+order by active_friend.last_update_date desc limit 10
+
+
+
+
+
+---my dashboard sql
+select * from ( 
+
+(select a.list_item_id id,
+ 'list_items' source,
+ a.item_name description,
+ a.bought_by source_by,
+ a.show_buyer show_source,
+ a.last_update_date last_update_date,
+ b.fb_username list_owner from list_items a ,
+user_lists b 
+where b.fb_username = '500012696' 
+and a.bought_by IS NOT NULL 
+and a.user_list_id = b.user_list_id 
+ORDER BY a.last_update_date desc LIMIT 5)
+
+ UNION ALL 
+
+(select * from (select a.comment_id id,
+ 'comments' source,
+ a.comment_desc description,
+ a.fb_username source_by,
+ CONCAT(a.list_id, '-', a.list_type) show_source,
+ a.creation_date last_update_date,
+ if(a.list_type='list',
+ (select fb_username from user_lists b where b.user_list_id = a.list_id),
+ (select c.fb_username from user_lists c,
+ list_items d where c.user_list_id = d.user_list_id and d.list_item_id = a.list_id ) )list_owner 
+from user_comments a 
+WHERE a.delete_flag is null 
+ORDER BY a.creation_date desc LIMIT 5) comments 
+WHERE comments.list_owner = '500012696') 
+
+) my_feed ORDER BY my_feed.last_update_date desc LIMIT 2,
+ 4
+
+
+ a.comment_desc description,
+
+select a.comment_id id,
+ 'comments' source,
+ a.fb_username source_by,
+ CONCAT(a.list_id, '-', a.list_type) show_source,
+ a.creation_date last_update_date,
+ if(a.list_type='list',
+ (select fb_username from user_lists b where b.user_list_id = a.list_id),
+ (select c.fb_username from user_lists c,
+ list_items d where c.user_list_id = d.user_list_id and d.list_item_id = a.list_id ) )list_owner 
+from user_comments a,  
+      user_lists ul 
+ where ul.fb_username = '500012696'
+ and   ul.user_list_id = a.list_id
+ and  a.list_type = 'list'
+
+
+select a.comment_id id,
+ 'comments' source,
+ a.fb_username source_by,
+ CONCAT(a.list_id, '-', a.list_type) show_source,
+ a.creation_date last_update_date,
+ if(a.list_type='list',
+ (select fb_username from user_lists b where b.user_list_id = a.list_id),
+ (select c.fb_username from user_lists c,
+ list_items d where c.user_list_id = d.user_list_id and d.list_item_id = a.list_id ) )list_owner 
+from user_comments a,  
+     user_lists ul,
+     list_items li 
+ where ul.fb_username = '500012696'
+ and   ul.user_list_id = li.user_list_id
+ and   a.list_id = li.list_item_id
+ and a.list_type = 'list_item'
+ 
+
+(select a.comment_id id,
+                                      'comments' source,
+                                      a.fb_username source_by,
+                                      CONCAT(a.list_id,'-',a.list_type) show_source,
+                                      if(a.list_type='list',
+                                         (select list_name from user_lists b where b.user_list_id = a.list_id),
+                                         (select c.list_name 
+                                          from user_lists c, list_items d 
+                                          where c.user_list_id = d.user_list_id 
+                                          and d.list_item_id = a.list_id ) 
+                                        )list_name ,  
+                                     date_format(a.creation_date,'%W %D %M %Y% %H:%i') display_date,
+                                     a.creation_date      last_update_date,
+                                      if(a.list_type='list',
+                                         (select fb_username from user_lists b where b.user_list_id = a.list_id),
+                                         (select c.fb_username 
+                                          from user_lists c, list_items d 
+                                          where c.user_list_id = d.user_list_id 
+                                          and d.list_item_id = a.list_id ) 
+                                        )list_owner 
+    from user_comments a ,
+     user_lists ul
+     WHERE a.delete_flag is null  
+     and ul.fb_username =  '500012696'
+     and ul.user_list_id = a.list_id
+    and a.list_type = 'list'
+    ORDER BY a.creation_date desc ) 
+union all
+(select a.comment_id id,
+                                      'comments' source,
+                                      a.fb_username source_by,
+                                      CONCAT(a.list_id,'-',a.list_type) show_source,
+                                      if(a.list_type='list',
+                                         (select list_name from user_lists b where b.user_list_id = a.list_id),
+                                         (select c.list_name 
+                                          from user_lists c, list_items d 
+                                          where c.user_list_id = d.user_list_id 
+                                          and d.list_item_id = a.list_id ) 
+                                        )list_name ,  
+                                     date_format(a.creation_date,'%W %D %M %Y% %H:%i') display_date,
+                                     a.creation_date      last_update_date,
+                                      if(a.list_type='list',
+                                         (select fb_username from user_lists b where b.user_list_id = a.list_id),
+                                         (select c.fb_username 
+                                          from user_lists c, list_items d 
+                                          where c.user_list_id = d.user_list_id 
+                                          and d.list_item_id = a.list_id ) 
+                                        )list_owner 
+    from user_comments a ,
+     user_lists ul,
+     list_items li
+     WHERE a.delete_flag is null  
+     and ul.fb_username =  '500012696'
+     and ul.user_list_id = li.user_list_id
+     and li.list_item_id = a.list_id
+     and a.list_type = 'list_item'
+    ORDER BY a.creation_date desc ) 
+
+
+select fb_username, creation_date, count(*)
+from user_lists
+where fb_username ='13714178'
+group by fb_username,creation_date
+order by creation_date desc 
+
+
+
+
+
+7%+n@mcUpU
+
+
+ require_once 'facebook.php';
+       $appapikey = '1f73abecf081b24aacbd9022ba62762a';
+       $appsecret = '61b6610e2c558ddb77e226f5986c3576';
+       $facebook = new Facebook($appapikey, $appsecret);
+
+
+select a.comment_id, a.fb_username, 
+       if(list_type='list',
+            (select fb_username 
+             from user_lists b 
+             where b.user_list_id = a.list_id),
+             (select c.fb_username 
+              from user_lists c, list_items d
+              where c.user_list_id = d.user_list_id
+              and d.list_item_id = a.list_id ) 
+          )list_owner, 
+        a.list_id, a.list_type  from user_comments a
+        where a.list_id = 42 ;
+
+
+select a.list_item_id, item_name, item_desc, bought_by, show_buyer, item_link, creation_date, last_update_date 
+
+select a.list_item_id, a.item_desc, a.bought_by, a.show_buyer, a.creation_date, a.last_update_date,
+          (select fb_username from user_lists b where b.user_list_id = a.user_list_id) list_owner
+       from list_items a  
+WHERE  a.bought_by IS NOT NULL
+AND a.last_update_date BETWEEN DATE_SUB(CURDATE(), INTERVAL 35 DAY ) AND CURDATE() 
+ORDER BY a.last_update_date desc
+
+
+AND last_update_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+
+AND last_update_date BETWEEN NOW() AND  DATE_SUB(NOW(), INTERVAL 30 DAY)
+
+AND DATE_SUB(CURDATE(),INTERVAL 30 DAY)
+
+comment_id, a.fb_username, 
+
+
+select a.comment_id, user_id, fb_username, list_id, list_type, comment_desc, creation_date, last_update_date
+
+select a.comment_id, a.user_id, a.fb_username, a.list_id, a.list_type, a.creation_date last_update_date,
+     if(a.list_type='list',
+            (select fb_username 
+             from user_lists b 
+             where b.user_list_id = a.list_id),
+             (select c.fb_username 
+              from user_lists c, list_items d
+              where c.user_list_id = d.user_list_id
+              and d.list_item_id = a.list_id ) 
+          )list_owner 
+from user_comments a
+where a.delete_flag is null
+AND a.creation_date BETWEEN DATE_SUB(CURDATE(), INTERVAL 08 DAY ) AND CURDATE() 
+ORDER BY a.creation_date desc
+
+
+
+-----final query for my dashboard
+
+select * from 
+(select a.list_item_id       id, 
+       'list_items'         source, 
+        a.item_name         description, 
+        a.bought_by         source_by, 
+        a.show_buyer        show_source,
+        a.last_update_date  last_update_date,
+        (select fb_username from user_lists b where b.user_list_id = a.user_list_id) list_owner
+       from list_items a  
+WHERE  a.bought_by IS NOT NULL
+AND a.last_update_date BETWEEN DATE_SUB(CURDATE(), INTERVAL 35 DAY ) AND CURDATE() 
+UNION ALL
+select a.comment_id                              id, 
+       'comments'                                source,
+       a.comment_desc                            description,
+       a.fb_username                             source_by, 
+       CONCAT(a.list_id,'-',a.list_type) show_source, 
+       a.creation_date                           last_update_date,
+     if(a.list_type='list',
+            (select fb_username 
+             from user_lists b 
+             where b.user_list_id = a.list_id),
+             (select c.fb_username 
+              from user_lists c, list_items d
+              where c.user_list_id = d.user_list_id
+              and d.list_item_id = a.list_id ) 
+          )list_owner 
+from user_comments a
+where a.delete_flag is null
+AND a.creation_date BETWEEN DATE_SUB(CURDATE(), INTERVAL 35 DAY ) AND CURDATE() 
+) my_feed
+ ORDER BY last_update_date desc
+
+
+ORDER BY a.last_update_date desc
+ORDER BY a.creation_date desc
+----

@@ -1,0 +1,2 @@
+sudo mysqld_safe &
+
